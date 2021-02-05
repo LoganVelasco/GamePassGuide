@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/dashboard_nav_graph.xml"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.loganv.gamepassguide.ui.DashboardFragment"
+        tools:layout="@layout/fragment_dashboard">
+
+        <action
+            android:id="@+id/action_DashboardFragment_to_CategoryFragment"
+            app:destination="@id/categoryFragment"
+            >
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="" />
+        </action>
+
+        <action
+            android:id="@+id/action_DashboardFragment_to_GameDetailFragment"
+            app:destination="@id/gameDetailFragment"
+            >
+            <argument
+                android:name="title"
+                app:argType="string"
+                android:defaultValue="" />
+            <argument
+                android:name="gameId"
+                app:argType="string"
+                android:defaultValue="" />
+            <argument
+                android:name="pc"
+                app:argType="boolean"
+                android:defaultValue="false" />
+            <argument
+                android:name="console"
+                app:argType="boolean"
+                android:defaultValue="false" />
+
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.loganv.gamepassguide.ui.CategoryFragment"
+        tools:layout="@layout/fragment_category">
+
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="" />
+
+        <action
+            android:id="@+id/action_CategoryFragment_to_GameDetailFragment"
+            app:destination="@id/gameDetailFragment">
+            <argument
+                android:name="title"
+                app:argType="string"
+                android:defaultValue="" />
+            <argument
+                android:name="gameId"
+                app:argType="string"
+                android:defaultValue="" />
+            <argument
+                android:name="pc"
+                app:argType="boolean"
+                android:defaultValue="false" />
+            <argument
+                android:name="console"
+                app:argType="boolean"
+                android:defaultValue="false" />
+
+        </action>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/gameDetailFragment"
+        android:name="com.loganv.gamepassguide.ui.GameDetailFragment"
+        tools:layout="@layout/fragment_game_detail"
+        >
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="gameId"
+            app:argType="string"
+            android:defaultValue="" />
+        <argument
+            android:name="pc"
+            app:argType="boolean"
+            android:defaultValue="false" />
+        <argument
+            android:name="console"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
+
+</navigation>
