@@ -35,7 +35,7 @@
             android:gravity="center"
             android:paddingBottom="15dp"
             android:textAlignment="center"
-            android:textColor="@color/white"
+            android:textColor="@android:color/white"
             app:layout_constraintEnd_toEndOf="@id/game_art"
             app:layout_constraintStart_toStartOf="@id/game_art"
             app:layout_constraintTop_toBottomOf="@id/game_art"

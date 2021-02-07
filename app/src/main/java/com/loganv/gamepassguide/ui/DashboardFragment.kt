@@ -40,7 +40,6 @@ class DashboardFragment : Fragment() {
         val navController = Navigation.findNavController(requireActivity(), R.id.nav_host_fragment)
 
 
-        var viewModel: DashboardViewModel = ViewModelProvider(this).get(DashboardViewModel::class.java)
         viewModel.getGamesPassGames()
 
         viewModel.data.observe(requireActivity(), { result ->

@@ -1,23 +1,15 @@
 package com.loganv.gamepassguide.adapters
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.navigation.NavController
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.card.MaterialCardView
 import com.loganv.gamepassguide.R
-import com.loganv.gamepassguide.models.Game
-import com.loganv.gamepassguide.models.GameFilter
-import com.loganv.gamepassguide.ui.DashboardFragmentDirections
-import com.loganv.gamepassguide.utils.ArtworkData
-import com.squareup.picasso.Picasso
-import java.lang.StringBuilder
+import com.loganv.gamepassguide.viewmodels.DashboardViewModel
 
-internal class MenuFiltersAdapter(private val filters: List<String>): RecyclerView.Adapter<MenuFiltersAdapter.MyViewHolder>()  {
+internal class MenuFiltersAdapter(private val viewModel: DashboardViewModel, private val filters: List<String>): RecyclerView.Adapter<MenuFiltersAdapter.MyViewHolder>()  {
     internal inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         var title: MaterialButton= view.findViewById(R.id.filter_button)
     }
@@ -36,6 +28,15 @@ internal class MenuFiltersAdapter(private val filters: List<String>): RecyclerVi
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.title.text = filters[position]
+        holder.title.setOnClickListener {
+            if(holder.title.isChecked){
+                viewModel.addFilter(holder.title.text.toString())
+                holder.title.setTextColor(Color.WHITE)
+            }else{
+                holder.title.setTextColor(Color.BLACK)
+                viewModel.removeFilter(holder.title.text.toString())
+            }
+        }
     }
 
 }

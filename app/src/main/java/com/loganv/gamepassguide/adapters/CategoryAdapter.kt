@@ -58,11 +58,11 @@ internal class CategoryAdapter(private val games: List<Game>, private val navCon
 
         if(gameId.isNotEmpty()) {
             Picasso.get().load("https://gamepassport.net/images/boxart/$gameId.webp")
-                .resize(500, 500)
+                .resize(400, 400)
                 .into(holder.artwork)
         }else{
             Picasso.get().load("https://gamepassport.net/images/boxart/9NBLGGH43KZB.webp")
-                .resize(500, 500)
+                .resize(450, 450)
                 .into(holder.artwork)
         }
 

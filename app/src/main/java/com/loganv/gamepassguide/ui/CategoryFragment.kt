@@ -43,7 +43,7 @@ class CategoryFragment : Fragment() {
         val title = view.findViewById<TextView>(R.id.category_title)
 
         title.text = args.title
-
+1
         val divider = DividerItemDecoration(view.context, DividerItemDecoration.VERTICAL)
         val dividerDrawable = view.resources.getDrawable(R.drawable.vertical_divider)
         divider.setDrawable(dividerDrawable)
@@ -54,7 +54,7 @@ class CategoryFragment : Fragment() {
 
         viewModel.data.observe(requireActivity(), { result ->
             result.onSuccess { allGames ->
-                val games = viewModel.generateCategory(allGames, DashboardViewModel.Categories.PC)
+                val games = viewModel.generateCategory(allGames, DashboardViewModel.Platform.PC)
                 categoryRecyclerView.adapter = RowAdapter(games, navController)
             }
         })

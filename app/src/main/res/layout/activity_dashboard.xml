@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.constraintlayout.motion.widget.MotionLayout
+    android:id="@+id/dashboard_motion_layout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/cardview_dark_background"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    app:layoutDescription="@xml/activity_dashboard_scene"
+    tools:showPaths="true">
 
-    <include layout="@layout/search_bar" />
+    <include layout="@layout/search_bar"
+        tools:layout_height="wrap_content"
+        tools:layout_width="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:id="@+id/activity_search_bar"
+         />
 
     <fragment
     android:id="@+id/nav_host_fragment"
@@ -22,4 +32,4 @@
     app:layout_constraintBottom_toBottomOf="parent"
     />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.motion.widget.MotionLayout>
