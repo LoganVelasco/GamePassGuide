@@ -4,6 +4,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
+import android.widget.SearchView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.motion.widget.MotionLayout
@@ -25,7 +26,7 @@ class DashboardActivity : AppCompatActivity() {
     private val navController by lazy { Navigation.findNavController(this, R.id.nav_host_fragment) }
     private val appBarConfiguration by lazy { AppBarConfiguration(navController.graph) }
     private val searchBar by lazy { findViewById<MaterialCardView>(R.id.activity_search_bar) }
-    private val searchButton by lazy { findViewById<ImageButton>(R.id.search_button) }
+    private val searchButton by lazy { findViewById<SearchView>(R.id.search_button) }
     private val menuButton by lazy { findViewById<ImageButton>(R.id.menu_button) }
     private val dropDownMenu by lazy { findViewById<RecyclerView>(R.id.menu_other_filters) }
     private val motionLayout by lazy { findViewById<MotionLayout>(R.id.dashboard_motion_layout) }
@@ -110,9 +111,15 @@ class DashboardActivity : AppCompatActivity() {
             }
         }
 
-//        searchButton.setOnClickListener {
-//
-//        }
+        searchButton.setOnSearchClickListener {
+            // todo set all possible navs
+            val actionWithArgs = DashboardFragmentDirections.actionDashboardFragmentToCategoryFragment("")
+            navController.navigate(actionWithArgs)
+        }
+
+        searchButton.setOnQueryTextFocusChangeListener { v, hasFocus ->
+
+        }
 
         
     }

@@ -2,16 +2,23 @@ package com.loganv.gamepassguide.viewmodels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.fasterxml.jackson.dataformat.csv.CsvMapper
+import com.fasterxml.jackson.dataformat.csv.CsvSchema
+import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.loganv.gamepassguide.apis.GamePassApi
+import com.loganv.gamepassguide.apis.GamePassInfoApi
 import com.loganv.gamepassguide.models.Availability
 import com.loganv.gamepassguide.models.Game
+import com.loganv.gamepassguide.models.GamePassInfo
 import com.loganv.gamepassguide.models.GamePassResponse
 import com.loganv.gamepassguide.utils.ArtworkData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.core.SingleObserver
 import io.reactivex.rxjava3.disposables.Disposable
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
+import java.io.FileReader
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,6 +27,9 @@ open class DashboardViewModel
 
     @Inject
     lateinit var gamePassApi: GamePassApi
+
+    @Inject
+    lateinit var gamePassInfoApi: GamePassInfoApi
 
     val artworkData = ArtworkData()
 
@@ -30,6 +40,19 @@ open class DashboardViewModel
     private var isSuccess = false
     private var genrefilters = arrayListOf<String>()
     var platformFilter = Platform.ALL
+
+    val csvMapper = CsvMapper().apply {
+        registerModule(KotlinModule())
+    }
+
+    inline fun <reified T> readCsvFile(reader: String): List<T> {
+        return csvMapper
+            .readerFor(T::class.java)
+            .with(CsvSchema.emptySchema().withHeader())
+            .readValues<T>(reader)
+            .readAll()
+            .toList()
+    }
 
     open fun getGamesPassGames() {
         if (!inProgress && !isSuccess) {
@@ -45,7 +68,8 @@ open class DashboardViewModel
                         if (response.isSuccessful) {
                             val games = getGamesList(response.body()!!)
                             cachedGames = games
-                            data.value = Result.success(games)
+                            getGamesPassInfo()
+                            data.value = Result.success(getFilteredGames())
                             isSuccess = true
                             inProgress = true
                         }
@@ -56,8 +80,42 @@ open class DashboardViewModel
                     }
                 })
 
-            }else{
-                data.value = Result.success(cachedGames!!)
+            } else {
+                data.value = Result.success(getFilteredGames())
+            }
+        }
+    }
+
+    open fun getGamesPassInfo() {
+        val call = gamePassInfoApi.getGamePassGameInfo()
+
+        call.enqueue(object : retrofit2.Callback<ResponseBody> {
+            override fun onResponse(
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
+            ) {
+                if (response.isSuccessful) {
+                    val info = response.body()!!.string()
+                    val infoWithHeaders =
+                        "\"game\",\"system\",\"xCloud\",\"status\",\"added\",\"removed\",\"months\",\"release\",\"age\",\"metacritic\",\"completion\",\"genre\"\n$info"
+                    val gameInfoList: List<GamePassInfo> = readCsvFile(infoWithHeaders)
+                    val activeGames = gameInfoList.filter { it.status.equals("Active") }
+                    addInfo(activeGames)
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                t.message
+            }
+        })
+    }
+
+    private fun addInfo(gameInfoList: List<GamePassInfo>) {
+        cachedGames!!.forEach { game ->
+
+            game.info = gameInfoList.find {
+                val filteredString = game.title.replace(" Standard Edition", "")
+                it.game!! == filteredString
             }
         }
     }
@@ -72,7 +130,7 @@ open class DashboardViewModel
         )
     }
 
-    fun setCurrentPlatformFilter(platform: Platform){
+    fun setCurrentPlatformFilter(platform: Platform) {
         platformFilter = platform
         data.value = Result.success(getFilteredGames())
     }
@@ -87,9 +145,17 @@ open class DashboardViewModel
         data.value = Result.success(getFilteredGames())
     }
 
-    private fun getFilteredGames(): List<Game>{
-        if(genrefilters.isEmpty()){
-           return when(platformFilter){
+    fun getSearchResults(title: String): List<Game>{
+        if(cachedGames.isNullOrEmpty())return emptyList()
+        return cachedGames!!.filter {
+            it.title.contains(title)
+        }
+    }
+
+
+    private fun getFilteredGames(): List<Game> {
+        if (genrefilters.isEmpty()) {
+            return when (platformFilter) {
                 Platform.ALL -> {
                     cachedGames!!
                 }
@@ -103,20 +169,25 @@ open class DashboardViewModel
         }
         val games = cachedGames
         val filteredGames = arrayListOf<Game>()
-        games?.forEach{  game ->
-                if(game.genre != null && game.genre!!.any { genrefilters.contains(it) }){
-                    when(platformFilter){
-                        Platform.ALL -> {
-                            filteredGames.add(game)
+        games?.forEach games@{ game ->
+            if (game.info?.genre != null) {
+                genrefilters.forEach {
+                    if (game.info!!.genre?.contains(it) == true) {
+                        when (platformFilter) {
+                            Platform.ALL -> {
+                                filteredGames.add(game)
+                            }
+                            Platform.PC -> {
+                                if (game.pc) filteredGames.add(game)
+                            }
+                            Platform.CONSOLE -> {
+                                if (game.console) filteredGames.add(game)
+                            }
                         }
-                        Platform.PC -> {
-                            if(game.pc)filteredGames.add(game)
-                        }
-                        Platform.CONSOLE -> {
-                            if(game.console)filteredGames.add(game)
-                        }
+                        return@games
                     }
                 }
+            }
         }
         return filteredGames
     }
@@ -141,16 +212,6 @@ open class DashboardViewModel
             ) || it.title.contains("Black")
         }
         val steamGames = games.filter { it.steam }
-
-        recentlyAddedGames.forEach {
-            it.genre = arrayListOf("RPG")
-        }
-        leavingSoonGames.forEach {
-            it.genre = arrayListOf("Shooter")
-        }
-        firstPartyGames.forEach {
-            it.genre = arrayListOf("Action")
-        }
 
         return listOf(
             Pair("Recently Added", recentlyAddedGames),
@@ -193,9 +254,12 @@ open class DashboardViewModel
 
 
     override fun onSuccess(t: Result<List<Game>>) {
-        data.value = t
-        isSuccess = true
-        inProgress = true
+//        val games = getGamesList(response.body()!!)
+//        cachedGames = games
+//        getGamesPassInfo()
+//        data.value = Result.success(getFilteredGames())
+//        isSuccess = true
+//        inProgress = true
     }
 
     override fun onSubscribe(d: Disposable) {
@@ -214,7 +278,7 @@ open class DashboardViewModel
     }
 
     companion object {
-         var cachedGames: List<Game>? = null
+        var cachedGames: List<Game>? = null
     }
 
 

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.card.MaterialCardView
 import com.loganv.gamepassguide.R
 import com.loganv.gamepassguide.models.Game
+import com.loganv.gamepassguide.ui.CategoryFragmentDirections
 import com.loganv.gamepassguide.ui.DashboardFragmentDirections
 import com.loganv.gamepassguide.utils.ArtworkData
 import com.squareup.picasso.Picasso
@@ -51,7 +52,7 @@ internal class CategoryAdapter(private val games: List<Game>, private val navCon
         holder.title.text = game.title
 
         holder.gameCardView.setOnClickListener {
-            val actionWithArgs = DashboardFragmentDirections.actionDashboardFragmentToGameDetailFragment(game.title, game.gameId, pc = game.pc, console = game.console  )
+            val actionWithArgs = CategoryFragmentDirections.actionCategoryFragmentToGameDetailFragment(game.title, game.gameId, pc = game.pc, console = game.console  )
             navController.navigate(actionWithArgs)
         }
 

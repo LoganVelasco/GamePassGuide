@@ -24,7 +24,8 @@
             android:layout_height="wrap_content"
             android:scaleY="1"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/search_button"/>
 
         <Constraint android:id="@+id/search_button"
             android:layout_width="wrap_content"
@@ -37,20 +38,6 @@
             android:layout_height="wrap_content"
             app:layout_constraintTop_toBottomOf="@id/search_button"
             android:visibility="gone"/>
-
-<!--        <Constraint android:id="@+id/filter_buttons"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/menu_section_title" />-->
-
-
-<!--        <Constraint android:id="@id/menu_section_title"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            />-->
 
         <Constraint android:id="@+id/nav_host_fragment"
             android:layout_width="match_parent"
@@ -96,19 +83,6 @@
             app:layout_constraintTop_toBottomOf="@id/search_button"
             android:visibility="visible"
             />
-<!--        <Constraint android:id="@+id/filter_buttons"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:layout_constraintTop_toBottomOf="@id/menu_section_title" />-->
-
-
-<!--        <Constraint android:id="@id/menu_section_title"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            app:layout_constraintStart_toStartOf="parent"-->
-<!--            app:layout_constraintEnd_toEndOf="parent"-->
-<!--            app:layout_constraintTop_toTopOf="parent"-->
-<!--            />-->
 
         <Constraint android:id="@+id/nav_host_fragment"
             android:layout_width="match_parent"

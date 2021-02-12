@@ -1,11 +1,11 @@
 package com.loganv.gamepassguide.models
 
-class Game( val title: String,
-            val gameId: String,
-            val console: Boolean,
-            val pc: Boolean,
-            val steam: Boolean,
-            var genre: ArrayList<String>? = null
+class Game(val title: String,
+           val gameId: String,
+           val console: Boolean,
+           val pc: Boolean,
+           val steam: Boolean,
+           var info: GamePassInfo? = null
             ) {
 
 

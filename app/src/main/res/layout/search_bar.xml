@@ -25,14 +25,14 @@
             android:padding="5dp"
             android:src="@android:drawable/ic_menu_more"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/search_button"
+            app:layout_constraintBottom_toBottomOf="@id/search_button"/>
 
-        <ImageButton
+
+        <SearchView
             android:id="@+id/search_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@color/cardview_shadow_end_color"
-            android:padding="5dp"
             android:src="@android:drawable/ic_menu_search"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -59,12 +59,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 />
-            <com.google.android.material.button.MaterialButton xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/filter_button_all"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:backgroundTint="@color/cardview_dark_background"
                 android:singleLine="true"
                 app:cornerRadius="20dp"
@@ -75,12 +73,10 @@
                 app:layout_constraintTop_toBottomOf="@id/menu_section_title"
                 app:layout_constraintEnd_toStartOf="@id/filter_button_console">
             </com.google.android.material.button.MaterialButton>
-            <com.google.android.material.button.MaterialButton xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/filter_button_console"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:backgroundTint="@color/cardview_dark_background"
                 android:singleLine="true"
                 app:cornerRadius="20dp"
@@ -90,12 +86,10 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 android:text="CONSOLE">
             </com.google.android.material.button.MaterialButton>
-            <com.google.android.material.button.MaterialButton xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/filter_button_pc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:backgroundTint="@color/cardview_dark_background"
                 android:singleLine="true"
                 app:cornerRadius="20dp"
