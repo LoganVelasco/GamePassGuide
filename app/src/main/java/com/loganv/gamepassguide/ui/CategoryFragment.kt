@@ -52,10 +52,10 @@ class CategoryFragment : Fragment() {
             result.onSuccess { allGames ->
                 if(title.equals("")){
                     val searchView = view.findViewById<SearchView>(R.id.search_button)
-                    searchView.setOnQueryTextListener{
-                        viewModel.getSearchResults()
-                        categoryRecyclerView.adapter = CategoryAdapter(allGames, navController)
-                    }
+//                    searchView.setOnQueryTextListener{
+//                        viewModel.getSearchResults()
+//                        categoryRecyclerView.adapter = CategoryAdapter(allGames, navController)
+//                    }
                 }
 
             }
